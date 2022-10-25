@@ -4,8 +4,7 @@
   "description": "An API for my `My Watch List` project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Roman 'Connor' Konstantinov",
   "license": "ISC",
