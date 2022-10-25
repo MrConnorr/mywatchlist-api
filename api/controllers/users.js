@@ -8,6 +8,14 @@ const sanitize = require('mongo-sanitize');
 const hbs = require('nodemailer-express-handlebars');
 const path = require("path");
 
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+    cloud_name: "hlzbzu7fj",
+    api_key: "686949753728926",
+    api_secret: "VCcUa5FI-ZcWudsGLU1WAem-72k"
+});
+
 const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
     secureConnection: false,
@@ -322,6 +330,7 @@ exports.check_jwt_token = (req, res, next) =>
 exports.change_user_pass_or_pic =  (req, res, next) =>
 {
     const userId = jwt.decode(req.headers.authorization.split(' ')[1]).userId;
+    const username = jwt.decode(req.headers.authorization.split(' ')[1]).username;
 
     if(sanitize(req.params.toChange) === "password")
     {
@@ -398,6 +407,8 @@ exports.change_user_pass_or_pic =  (req, res, next) =>
             })
     } else if(sanitize(req.params.toChange) === "profilePic")
     {
+        cloudinary.uploader.upload(req.file.path, {public_id: username + "-profilePic" + ".png"}).then(r  => console.log(r));
+
         User.findByIdAndUpdate(userId,
             {
                 $set: {userProfilePic: req.file.path.replace("\\","/")}
