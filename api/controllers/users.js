@@ -183,7 +183,7 @@ exports.forgot_password_email = (req, res, next) =>
             }
 
             const verificationToken = jwt.sign({id: result._id}, process.env.JWT_KEY, {expiresIn: "30min"});
-            const url = `https://sprightly-snickerdoodle-9a02ca.netlify.app/forgotPassword/${verificationToken}`;
+            const url = `https://mywatchlists.netlify.app/forgotPassword/${verificationToken}`;
 
             transporter.sendMail(
                 {
@@ -533,7 +533,7 @@ exports.user_signup = (req, res, next) =>
                                         })
                                 });
                             const verificationToken = jwt.sign({user: dummyUser}, process.env.JWT_KEY, {expiresIn: "30min"});
-                            const url = `https://sprightly-snickerdoodle-9a02ca.netlify.app/verification/${verificationToken}`;
+                            const url = `https://mywatchlists.netlify.app/verification/${verificationToken}`;
 
                             transporter.sendMail(
                                 {
@@ -591,7 +591,7 @@ exports.verify_resend = (req, res, next) =>
                         }
 
                         const verificationToken = jwt.sign({user: result}, process.env.JWT_KEY, {expiresIn: "30min"});
-                        const url = `https://sprightly-snickerdoodle-9a02ca.netlify.app/verification/${verificationToken}`;
+                        const url = `https://mywatchlists.netlify.app/verification/${verificationToken}`;
 
                         transporter.sendMail(
                             {
