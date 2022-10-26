@@ -8,7 +8,7 @@ const userRoutes = require('./api/routes/user');
 const commentsRoutes = require('./api/routes/comments');
 const ratingRoutes = require('./api/routes/rating');
 
-mongoose.connect('mongodb+srv://Connor:'+process.env.MANGO_DB_PASS+'@online-cinema.z2yeylw.mongodb.net/mywathclist-db?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://Connor:'+process.env.MANGO_DB_PASS+'@online-cinema.z2yeylw.mongodb.net/mywatchlist-db?retryWrites=true&w=majority');
 
 app.use((req, res,  next) =>
 {
