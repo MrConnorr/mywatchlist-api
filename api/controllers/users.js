@@ -474,6 +474,9 @@ exports.delete_user = (req, res, next) =>
 
 exports.user_signup = (req, res, next) =>
 {
+
+    let imageUrl;
+
     if (sanitize(req.body.password) === "") return res.status(409).json({ error: "Password must be provided" });
 
     User.find({$or : [{email: sanitize(req.body.email)}, {username: sanitize(req.body.username)}]})
@@ -498,8 +501,9 @@ exports.user_signup = (req, res, next) =>
                             });
                     }
 
-                    const imageUrl = cloudinary.uploader.upload(req.file.path, {public_id: sanitize(req.body.username) + "-profilePic"})
-                        .then(result  => result.secure_url);
+                    if(req.file !== undefined)
+                    cloudinary.uploader.upload(req.file.path, {public_id: sanitize(req.body.username) + "-profilePic"})
+                        .then(result  => imageUrl = result.secure_url);
 
                     bcrypt.hash(sanitize(req.body.password), 10, (err, hash) =>
                     {
