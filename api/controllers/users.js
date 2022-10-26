@@ -173,7 +173,7 @@ exports.forgot_password_email = (req, res, next) =>
             });
     }
 
-    User.findOne({$or : [{email: sanitize(req.body.user)}, {username: {$regex: new RegExp("^" + sanitize(req.params.username).toLowerCase(), "i")}}]})
+    User.findOne({$or : [{email: sanitize(req.body.user)}, {username: {$regex: new RegExp("^" + sanitize(req.body.user).toLowerCase(), "i")}}]})
         .select('_id email')
         .then(result =>
         {
@@ -479,7 +479,7 @@ exports.user_signup = (req, res, next) =>
 
     if (sanitize(req.body.password) === "") return res.status(409).json({ error: "Password must be provided" });
 
-    User.find({$or : [{email: sanitize(req.body.email)}, {username: {$regex: new RegExp("^" + sanitize(req.params.username).toLowerCase(), "i")}}]})
+    User.find({$or : [{email: sanitize(req.body.email)}, {username: {$regex: new RegExp("^" + sanitize(req.body.username).toLowerCase(), "i")}}]})
         .then(user =>
         {
             if (user.length >= 1)
@@ -490,7 +490,7 @@ exports.user_signup = (req, res, next) =>
                     });
             }
 
-            DummyUser.find({$or : [{email: sanitize(req.body.email)}, {username: {$regex: new RegExp("^" + sanitize(req.params.username).toLowerCase(), "i")}}]})
+            DummyUser.find({$or : [{email: sanitize(req.body.email)}, {username: {$regex: new RegExp("^" + sanitize(req.body.username).toLowerCase(), "i")}}]})
                 .then(user =>
                 {
                     if (user.length >= 1)
@@ -737,7 +737,7 @@ exports.user_login = (req, res, next) =>
         return res.status(401).json({error: "Username or email is required"});
     }
 
-    DummyUser.findOne({$or : [{email: sanitize(req.body.user)}, {username: {$regex: new RegExp("^" + sanitize(req.params.username).toLowerCase(), "i")}}]})
+    DummyUser.findOne({$or : [{email: sanitize(req.body.user)}, {username: {$regex: new RegExp("^" + sanitize(req.body.user).toLowerCase(), "i")}}]})
         .then(result =>
         {
             if (result !== null)
@@ -748,7 +748,7 @@ exports.user_login = (req, res, next) =>
                     });
             }
 
-            User.findOne({$or : [{email: sanitize(req.body.user)}, {username: {$regex: new RegExp("^" + sanitize(req.params.username).toLowerCase(), "i")}}]})
+            User.findOne({$or : [{email: sanitize(req.body.user)}, {username: {$regex: new RegExp("^" + sanitize(req.body.user).toLowerCase(), "i")}}]})
                 .then(user =>
                 {
 
