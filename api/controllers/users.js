@@ -498,6 +498,9 @@ exports.user_signup = (req, res, next) =>
                             });
                     }
 
+                    const imageUrl = cloudinary.uploader.upload(req.file.path, {public_id: sanitize(req.body.username) + "-profilePic"})
+                        .then(result  => result.secure_url);
+
                     bcrypt.hash(sanitize(req.body.password), 10, (err, hash) =>
                     {
                         if(err)
@@ -512,8 +515,7 @@ exports.user_signup = (req, res, next) =>
                                 username: sanitize(req.body.username),
                                 email: sanitize(req.body.email),
                                 password: hash,
-                                userProfilePic: req.file !== undefined ? cloudinary.uploader.upload(req.file.path, {public_id: sanitize(req.body.username) + "-profilePic"})
-                                    .then(result  => result.secure_url) : "usersProfilePics/default.jpg"
+                                userProfilePic: req.file !== undefined ? imageUrl : "usersProfilePics/default.jpg"
                             });
 
                             dummyUser.save()
