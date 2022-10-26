@@ -407,26 +407,28 @@ exports.change_user_pass_or_pic =  (req, res, next) =>
             })
     } else if(sanitize(req.params.toChange) === "profilePic")
     {
-        cloudinary.uploader.upload(req.file.path, {public_id: username + "-profilePic" + ".png"}).then(r  => console.log(r));
+        cloudinary.uploader.upload(req.file.path, {public_id: username + "-profilePic"})
+            .then(result  =>
+                User.findByIdAndUpdate(userId,
+                    {
+                        $set: {userProfilePic: result.secure_url}
+                    }, {new:true})
+                    .then(result =>
+                    {
+                        res.status(200).json(
+                            {
+                                updatedUser: result
+                            });
+                    })
+                    .catch(err =>
+                    {
+                        res.status(500).json(
+                            {
+                                error: err.message
+                            });
+                    })
 
-        User.findByIdAndUpdate(userId,
-            {
-                $set: {userProfilePic: req.file.path.replace("\\","/")}
-            }, {new:true})
-            .then(result =>
-            {
-                res.status(200).json(
-                    {
-                        updatedUser: result
-                    });
-            })
-            .catch(err =>
-            {
-                res.status(500).json(
-                    {
-                        error: err.message
-                    });
-            });
+            );
     }
 }
 
@@ -510,7 +512,8 @@ exports.user_signup = (req, res, next) =>
                                 username: sanitize(req.body.username),
                                 email: sanitize(req.body.email),
                                 password: hash,
-                                userProfilePic: req.file !== undefined ? req.file.path.replace("\\","/") : "usersProfilePics/default.jpg",
+                                userProfilePic: req.file !== undefined ? cloudinary.uploader.upload(req.file.path, {public_id: sanitize(req.body.username) + "-profilePic"})
+                                    .then(result  => result.secure_url) : "usersProfilePics/default.jpg"
                             });
 
                             dummyUser.save()

@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const checkAuth = require('../middleware/check-auth');
 const UserController = require('../controllers/users');
+const jwt = require("jsonwebtoken");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb)
@@ -12,8 +13,6 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb)
     {
         const username = req.headers.authorization ? jwt.decode(req.headers.authorization.split(' ')[1]).username : req.body.username;
-
-/*        cb(null, username + "-profilePic" + "." + file.originalname.split('.')[1]);*/
         cb(null, username + "-profilePic" + ".png");
     }
 });
