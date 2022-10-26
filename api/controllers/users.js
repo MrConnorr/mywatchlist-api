@@ -519,7 +519,7 @@ exports.user_signup = (req, res, next) =>
                                 username: sanitize(req.body.username),
                                 email: sanitize(req.body.email),
                                 password: hash,
-                                userProfilePic: req.file !== undefined ? imageUrl : "usersProfilePics/default.jpg"
+                                userProfilePic: req.file !== undefined ? cloudinary.url(sanitize(req.body.username) + "-profilePic") : "usersProfilePics/default.jpg",
                             });
 
                             dummyUser.save()
